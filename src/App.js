@@ -10,7 +10,7 @@ class App extends Component {
   };
 
   usernameOnChageHandler = (event) => {
-    this.setState({persons:["aaa", "bbb", "ccc"]});
+    this.setState({persons:["aaa", "bbb", "ccc12"]});
   }
 
   render () {
