@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
 import classes from './App.css';
-import UserInput from './Component/UserInput/UserInput';
-import UserOutput from './Component/UserOutput/UserOutput';
-import './Component/UserOutput/UserOutput.css';
-import ValidationComponent from './Component/ValidationComponent';
-import CharComponent from './Component/CharComponent/CharComponent'
-import './Component/CharComponent/CharComponent.css'
-import Task from './Component/Task/Task'
-import ErrorBoundary from './Component/ErrorBoundary/ErrorBoundary'
+import ValidationComponent from '../components/ValidationComponent';
+import CharComponent from '../components/CharComponent/CharComponent'
+import '../components/CharComponent/CharComponent.css'
+import Task from '../components/Task/Task'
+import ErrorBoundary from '../components/ErrorBoundary/ErrorBoundary'
 
 class App extends Component {
   state = {
@@ -21,7 +18,7 @@ class App extends Component {
 
   toggleShowPershonHandler = () => {
     const randomNumber = Math.random();
-    if (randomNumber > 0.7) throw Error('ERROR');
+    //if (randomNumber > 0.7) throw Error('ERROR');
 
     this.setState({ showText: !this.state.showText });
   };
