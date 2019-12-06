@@ -1,16 +1,9 @@
 import React from 'react';
-import Radium from 'radium';
 
 const task = (props) => {
 
-    const style = {
-        '@media (min-widh; 500px)': {
-            width: '450px'
-        }
-    };
-
     return (
-        <ol style={style}>
+        <ol>
             <li>Create an input field (in App component) with a change listener which outputs the length of the entered text below it (e.g. in a paragraph).</li>
             <li>Create a new component (=> ValidationComponent) which receives the text length as a prop</li>
             <li>Inside the ValidationComponent, either output "Text too short" or "Text long enough" depending on the text length (e.g. take 5 as a minimum length)</li>
@@ -20,4 +13,4 @@ const task = (props) => {
         </ol>);
 };
 
-export default Radium(task);
+export default task;

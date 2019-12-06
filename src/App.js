@@ -6,7 +6,6 @@ import './Component/UserOutput/UserOutput.css';
 import ValidationComponent from './Component/ValidationComponent';
 import CharComponent from './Component/CharComponent/CharComponent'
 import './Component/CharComponent/CharComponent.css'
-import Radium, {StyleRoot} from 'radium';
 import Task from './Component/Task/Task'
 
 class App extends Component {
@@ -42,10 +41,6 @@ class App extends Component {
       border: '1px solid blue',
       paddint: '8px',
       cursor: 'pointer',
-      ':hover': {
-        backgroundColor: 'lightgreen',
-        color: 'black'
-      }
     };
     
     const centerStyle = {
@@ -54,28 +49,24 @@ class App extends Component {
 
     if (this.state.showText) {
       buttonStyle.backgroundColor = "red";
-      buttonStyle[":hover"].backgroundColor = "salmon";
-      buttonStyle[":hover"].color = "black";
     }
 
     return (
-      <StyleRoot>
-        <div className="App">
-          <div style={centerStyle}>
-            <button style={buttonStyle} onClick={this.toggleShowPershonHandler}>Push me</button>
-          </div>
-          {this.state.showText ? <Task/> : null}
-          <p>Hint: Keep in mind that JavaScript strings are basically arrays!</p>
-          <hr />    
-          
-          <input onChange={(event)=>this.onChangeHandler(event)} value={this.state.strValue}/>
-          <label>{this.state.strValue}</label>
-          <ValidationComponent length={this.state.strValue.length}></ValidationComponent>
-          {charComponentList}
+      <div className="App">
+        <div style={centerStyle}>
+          <button style={buttonStyle} onClick={this.toggleShowPershonHandler}>Push me</button>
         </div>
-      </StyleRoot>
+        {this.state.showText ? <Task/> : null}
+        <p>Hint: Keep in mind that JavaScript strings are basically arrays!</p>
+        <hr />    
+        
+        <input onChange={(event)=>this.onChangeHandler(event)} value={this.state.strValue}/>
+        <label>{this.state.strValue}</label>
+        <ValidationComponent length={this.state.strValue.length}></ValidationComponent>
+        {charComponentList}
+      </div>
     )   
   };
 }
 
-export default Radium(App);
+export default App;
