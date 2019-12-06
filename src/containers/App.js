@@ -1,65 +1,57 @@
 import React, { Component } from 'react';
 import classes from './App.css';
-import ValidationComponent from '../components/ValidationComponent';
-import CharComponent from '../components/CharComponent/CharComponent'
-import '../components/CharComponent/CharComponent.css'
-import Task from '../components/Task/Task'
-import ErrorBoundary from '../components/ErrorBoundary/ErrorBoundary'
+import Persons from '../components/Persons/Persons';
 
 class App extends Component {
   state = {
-    strValue: "",
-    showText: false
-  };
-
-  onChangeHandler = (event) => {
-    this.setState({ "strValue": event.target.value });
+    showPersons: false,
+    persons: [
+      { id: "#111", name: "Max", age: 28 },
+      { id: "#222", name: "Manu", age: 29 },
+      { id: "#333", name: "Stephanie", age: 26 }
+    ]
   };
 
   toggleShowPershonHandler = () => {
-    const randomNumber = Math.random();
-    //if (randomNumber > 0.7) throw Error('ERROR');
-
-    this.setState({ showText: !this.state.showText });
+    this.setState({ showPersons: !this.state.showPersons });
   };
 
-  deleteCharHandler = (index) => {
-    const tempStr = this.state.strValue.split('');
-    tempStr.splice(index, 1);
-    const updatedText = tempStr.join('');
-    this.setState({ strValue: updatedText });
+  personClickHandler = (index) => {
+    const persons = [...this.state.persons];
+    persons.splice(index, 1);
+    this.setState({persons: persons});
+  };
+
+  nameChangeHandler = (event, id) => {
+    const personIndex = this.state.persons.findIndex(p => {
+      return p.id === id
+    });
+
+    const person = {...this.state.persons[personIndex]};
+    person.name = event.target.value;
+    const persons = [...this.state.persons];
+    persons[personIndex] = person;
+    this.setState({persons: persons});
   };
 
   render() {
-    const charComponentList = this.state.strValue.split('').map((ch, index) => {
-      return <CharComponent letter={ch} key={index} clicked={() => this.deleteCharHandler(index)}></CharComponent>
-    });
-
-    const centerStyle = {
-      width: '100%', display: 'flex', justifyContent: 'center'
-    };
-
-    let btnClass = null;
-    if (this.state.showText) {
+    let btnClass = null, persons = null;
+    if (this.state.showPersons) {
       btnClass = classes.red;
+      persons = (<Persons
+        persons={this.state.persons}
+        personClickHandler={this.personClickHandler}
+        nameChangeHandler={this.nameChangeHandler}
+      />);
     }
 
     return (
-      <ErrorBoundary>
-        <div className={classes.App}>
-          <div style={centerStyle}>
-            <button className={btnClass} onClick={this.toggleShowPershonHandler}>Push me</button>
-          </div>
-          {this.state.showText ? <Task /> : null}
-          <p className={classes.red}>Hint: Keep in mind that JavaScript strings are basically arrays!</p>
-          <hr />
-
-          <input onChange={(event) => this.onChangeHandler(event)} value={this.state.strValue} />
-          <label>{this.state.strValue}</label>
-          <ValidationComponent length={this.state.strValue.length}></ValidationComponent>
-          {charComponentList}
+      <div className={classes.App}>
+        <div>
+          <button className={btnClass} onClick={this.toggleShowPershonHandler}>Show persons</button>
+          {persons}
         </div>
-      </ErrorBoundary>
+      </div>
     )
   };
 }
