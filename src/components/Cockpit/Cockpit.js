@@ -4,6 +4,16 @@ import classes from './Cockpit.css'
 const Cockpit = (props) => {
     useEffect(() => {
         console.log('[Cockpit.js] useEffect');
+        return () => {
+            console.log('[Cockpit.js] cleanup work in useEffect');
+        };
+    }, []);
+
+    useEffect(() => {
+        console.log('[Cockpit.js]  2nd useEffect');
+        return () => {
+            console.log('[Cockpit.js] cleanup work in 2nd useEffect');
+        };
     });
 
     let btnClass = null;
