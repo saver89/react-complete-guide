@@ -1,8 +1,12 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Aux from '../../../hoc/Aux';
 import Button from '../../UI/Button/Button';
 
 const OrderSummary = (props) => {
+    useEffect(()=>{
+        console.log('[OrderSummary.js] useEffect');
+    });
+
     const ingrSummary = Object.keys(props.ingredients)
         .map(igKey => {
             return (
@@ -23,6 +27,6 @@ const OrderSummary = (props) => {
             <Button clicked={props.purchaseContinue} btnType="Success">CONTINUE</Button>
         </Aux>
     )
-}
+};
 
-export default OrderSummary;
+export default React.memo(OrderSummary);
