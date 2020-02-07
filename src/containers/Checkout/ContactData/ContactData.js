@@ -13,35 +13,57 @@ class ContactData extends Component {
         elementConfig: {
           type: 'text', placeholder: 'Your Name'
         },
-        value: ''
+        value: '',
+        validation: {
+          required: true
+        },
+        valid: false
       },
       street: {
         elementType: 'input',
         elementConfig: {
           type: 'text', placeholder: 'Your Street'
         },
-        value: ''
+        value: '',
+        validation: {
+          required: true
+        },
+        valid: false
       },
       zipCode: {
         elementType: 'input',
         elementConfig: {
           type: 'text', placeholder: 'Your ZIP Code'
         },
-        value: ''
+        value: '',
+        validation: {
+          required: true,
+          minLength: 5,
+          maxLength: 5
+        },
+        valid: false
       },
       country: {
         elementType: 'input',
         elementConfig: {
           type: 'text', placeholder: 'Country'
         },
-        value: ''
+        value: '',
+        validation: {
+          required: true
+        },
+        valid: false
       },
       email: {
         elementType: 'input',
         elementConfig: {
           type: 'email', placeholder: 'Your E-Mail'
         },
-        value: ''
+        value: '',
+        validation: {
+          required: true
+        },
+        valid: false
       },
       deliveryMethod: {
         elementType: 'select',
@@ -56,23 +78,19 @@ class ContactData extends Component {
     }
   };
 
-  orderHandler = event => {
+  orderHandler = (event) => {
+    event.preventDefault();
     this.setState({ loading: true });
+    const formData = {};
+    for (let formElementId in this.state.orderForm) {
+      formData[formElementId] = this.state.orderForm[formElementId].value;
+    }
 
     //alert('You continue');
     const order = {
       ingredients: this.props.ingredients,
       price: this.props.price,
-      customer: {
-        name: "Max",
-        address: {
-          street: "Test street 1",
-          zipCode: "41351",
-          country: "Germany"
-        },
-        email: "test@test.com"
-      },
-      deliveryMethod: "fastest"
+      orderData: formData
     };
 
     axios
@@ -87,15 +105,54 @@ class ContactData extends Component {
       });
   };
 
+  checkValidity = (value, rules) => {
+    let isValid = true;
+    
+    if (rules.required) {
+      isValid = value.trim() !== '' && isValid;
+    }
+    if (rules.minLength) {
+      isValid = value.length >= rules.minLength && isValid;
+    }
+    if (rules.maxLength) {
+      isValid = value.length <= rules.maxLength && isValid;
+    }
+    
+    return isValid;
+  }
+
+  inputChangedHandler = (event, inputId) => {
+    const updatedOrderForm = {...this.state.orderForm};
+    const updatedFormElement = {...updatedOrderForm[inputId]};
+    updatedFormElement.value = event.target.value;
+    updatedFormElement.valid = this.checkValidity(updatedFormElement.value, updatedFormElement.validation);
+    updatedOrderForm[inputId] = updatedFormElement;
+    console.log(updatedFormElement.valid);
+    this.setState({orderForm: updatedOrderForm});
+  }
+
   render() {
+    const formElementsArray = [];
+    for (let key in this.state.orderForm) {
+      formElementsArray.push({
+        id: key,
+        config: this.state.orderForm[key]
+      });
+    }
+
     let FormC = (
-      <form className={classes.ContactData}>
+      <form className={classes.ContactData} onSubmit={this.orderHandler}>
         <h4>Enter your Contact Data</h4>
-        <Input elementType elementConfig value />
-        <Input inputtype="input" name="email" placeholder="Your Mail" />
-        <Input inputtype="input" name="street" placeholder="Street" />
-        <Input inputtype="input" name="postal" placeholder="Postal Code" />
-        <Button btnType="Success" clicked={this.orderHandler}>
+        {formElementsArray.map(formElement => (
+          <Input
+            key={formElement.id}
+            elementType={formElement.config.elementType}
+            elementConfig={formElement.config.elementConfig}
+            value={formElement.config.value}
+            changed={(event)=>{this.inputChangedHandler(event, formElement.id)}}
+          />
+        ))}
+        <Button btnType="Success">
           Order
         </Button>
       </form>
