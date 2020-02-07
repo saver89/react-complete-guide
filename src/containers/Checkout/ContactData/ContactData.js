@@ -79,7 +79,8 @@ class ContactData extends Component {
           ]
         },
         value: '',
-        valid: true
+        validation: {},
+        valid: true,
       }
     },
     isValid: false
@@ -132,7 +133,7 @@ class ContactData extends Component {
     const updatedOrderForm = {...this.state.orderForm};
     const updatedFormElement = {...updatedOrderForm[inputId]};
     updatedFormElement.value = event.target.value;
-    updatedFormElement.valid = this.checkValidity(updatedFormElement.value, updatedFormElement.validation);
+    updatedFormElement.valid = this.checkValidity(updatedFormElement.value, updatedFormElement.validation);    
     updatedFormElement.touched = true;
     updatedOrderForm[inputId] = updatedFormElement;
     
